@@ -7,25 +7,29 @@
         balance = initialBalance;
     }
 
-    public decimal Deposit(decimal amount)
+    public void Deposit(decimal amount)
     {
         balance += amount;
-        return balance;
+        Console.WriteLine($"Deposited: {amount:C2}. New Balance: {balance:C2}");
     }
 
-    public decimal Withdraw(decimal amount)
+    public void Withdraw(decimal amount)
     {
+        if (amount > balance)
+        {
+            Console.WriteLine("Insufficient balance. Transaction cancelled.");
+            return;
+        }
+
         if (amount > 500)
-            amount = 500;
-        if (balance >= amount)
-            balance -= amount;
-        else
-            balance = 0;
-        return balance;
+        {
+            Console.WriteLine("Withdrawal amount exceeds the limit of $500. Transaction cancelled.");
+            return;
+        }
+
+        balance -= amount;
+        Console.WriteLine($"Withdrawn: {amount:C2}. New Balance: {balance:C2}");
     }
 
-    public decimal Balance
-    {
-        get { return balance; }
-    }
+    public decimal Balance => balance;
 }

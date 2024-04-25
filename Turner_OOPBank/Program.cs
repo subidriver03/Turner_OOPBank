@@ -5,39 +5,70 @@ class Program
     static void Main(string[] args)
     {
         Bank bank = new Bank(1000);
+        bool running = true;
 
-        while (true)
+        while (running)
         {
-            Console.WriteLine("Choose an option:");
-            Console.WriteLine("1 - Deposit");
-            Console.WriteLine("2 - Withdraw");
-            Console.WriteLine("3 - Check Balance");
-            Console.WriteLine("4 - Quit");
-
+            DisplayMenu();
             string option = Console.ReadLine();
             switch (option)
             {
                 case "1":
-                    Console.Write("Enter amount to deposit: ");
-                    decimal depositAmount = Convert.ToDecimal(Console.ReadLine());
-                    bank.Deposit(depositAmount);
-                    Console.WriteLine($"Deposited: {depositAmount:C2}. New Balance: {bank.Balance:C2}");
+                    PerformDeposit(bank);
                     break;
                 case "2":
-                    Console.Write("Enter amount to withdraw: ");
-                    decimal withdrawalAmount = Convert.ToDecimal(Console.ReadLine());
-                    bank.Withdraw(withdrawalAmount);
-                    Console.WriteLine($"Withdrawn: {withdrawalAmount:C2}. New Balance: {bank.Balance:C2}");
+                    PerformWithdrawal(bank);
                     break;
                 case "3":
-                    Console.WriteLine($"Current Balance: {bank.Balance:C2}");
+                    DisplayBalance(bank);
                     break;
                 case "4":
-                    return;
+                    running = false;
+                    break;
                 default:
                     Console.WriteLine("Invalid option. Please try again.");
                     break;
             }
         }
+    }
+
+    private static void DisplayMenu()
+    {
+        Console.WriteLine("Choose an option:");
+        Console.WriteLine("1 - Deposit");
+        Console.WriteLine("2 - Withdraw");
+        Console.WriteLine("3 - Check Balance");
+        Console.WriteLine("4 - Quit");
+    }
+
+    private static void PerformDeposit(Bank bank)
+    {
+        Console.Write("Enter amount to deposit: ");
+        if (decimal.TryParse(Console.ReadLine(), out decimal depositAmount))
+        {
+            bank.Deposit(Math.Round(depositAmount, 2));
+        }
+        else
+        {
+            Console.WriteLine("Invalid amount. Please enter a valid decimal number.");
+        }
+    }
+
+    private static void PerformWithdrawal(Bank bank)
+    {
+        Console.Write("Enter amount to withdraw: ");
+        if (decimal.TryParse(Console.ReadLine(), out decimal withdrawalAmount))
+        {
+            bank.Withdraw(Math.Round(withdrawalAmount, 2));
+        }
+        else
+        {
+            Console.WriteLine("Invalid amount. Please enter a valid decimal number.");
+        }
+    }
+
+    private static void DisplayBalance(Bank bank)
+    {
+        Console.WriteLine($"Current Balance: {bank.Balance:C2}");
     }
 }
